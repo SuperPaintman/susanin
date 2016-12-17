@@ -1,0 +1,46 @@
+include ../mixins/main.jade
+if page === undefined
+  - page = {}
+
+doctype html
+html(
+  lang= page.lang || "ru-RU" 
+  data-ng-app= page.angular ? page.angular : null
+  prefix= page.seo ? "og: http://ogp.me/ns#" : null
+  )
+  //- HTML HEADER
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+
+    title(
+      ng-bind= page.angular ? "page.title" : null
+      ng-init= page.angular ? "page.title = '#{page.title}'" : null
+    )= page.title || null
+
+    //- SEO
+    if page.seo
+      +seo(page.seo)
+
+    //- Icons
+    if page.icons
+      +icon(page.icons)
+
+    //- CSS
+    if page.styles
+      +style(page.styles)
+    block css
+
+    //- JS
+    block js-top
+
+    block head
+  body
+    block content
+
+    if page.scripts
+      +script(page.scripts)
+
+    if page.counters
+      +counter(page.counters)

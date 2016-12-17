@@ -1,0 +1,9 @@
+extends ../layouts/default.jade
+
+block content
+  .wrap
+    .error
+      if error.code
+        .error__code= error.code
+      if error.message
+        .error__message= error.message

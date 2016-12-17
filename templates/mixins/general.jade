@@ -1,0 +1,18 @@
+//- Подключение стилей
+mixin style(styles)
+  each style in styles
+    link(
+      id= style.id ? "css-#{ style.id }" : null
+      href= style.src 
+      media="all" 
+      rel="stylesheet"
+    )
+
+//- Подключение скриптов
+mixin script(scripts)
+  each script in scripts
+    script(
+      id= script.id ? "js-#{ script.id }" : null
+      src= script.src
+      async=(script.async ? true : null)
+    )

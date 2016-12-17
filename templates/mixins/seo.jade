@@ -1,0 +1,246 @@
+//- SEO
+mixin seo(arguments)
+  - var robots_index = arguments.robots.index ? "index" : "noindex"
+  - var robots_follow = arguments.robots.follow ? "follow" : "nofollow"
+  
+  if debugComments
+    // ==== SEO-ROBOTS ==== 
+  meta(
+    name="robots"
+    content="#{ robots_index }, #{ robots_follow }"
+  )
+  if debugComments
+    // ==== END SEO-ROBOTS ==== 
+
+  if debugComments
+    // ==== SEO-BASIC ==== 
+  +seo-basic(arguments)
+  if debugComments
+    // ==== END SEO-BASIC ==== 
+
+  if debugComments
+    // ==== SEO-OG ==== 
+  +seo-og(arguments)
+  if debugComments
+    // ==== END SEO-OG ==== 
+
+  if debugComments
+    // ==== SEO-TWITTER ==== 
+  +seo-twitter(arguments)
+  if debugComments
+    // ==== END SEO-TWITTER ==== 
+
+//- BASIC
+mixin seo-basic(arguments)
+  //- Title
+  if arguments.title
+    meta(
+      name="title"
+      content= arguments.title
+      ng-attr-content= page.angular ? "{{page.title}}" : null
+      ng-init= page.angular ? "page.title = '#{arguments.title}'" : null
+    )
+  else if debugComments
+    // TODO: title is undefined 
+
+  //- Description
+  if arguments.description
+    meta(
+      name="description"
+      content= arguments.description
+      ng-attr-content= page.angular ? "{{page.description}}" : null
+      ng-init= page.angular ? "page.description = '#{arguments.description}'" : null
+    )
+  else if debugComments
+    // TODO: description is undefined 
+
+  //- Keywords
+  if arguments.keywords
+    meta(
+      name="keywords"
+      content= arguments.keywords
+      ng-attr-content= page.angular ? "{{page.keywords}}" : null
+      ng-init= page.angular ? "page.keywords = '#{arguments.keywords}'" : null
+    )
+  else if debugComments
+    // TODO: keywords is undefined 
+
+//- Open Graph
+mixin seo-og(arguments)
+  //- Locale
+  if arguments.locale
+    meta(
+      property="og:locale"
+      content= arguments.locale
+      ng-attr-content= page.angular ? "{{page.locale}}" : null
+      ng-init= page.angular ? "page.locale = '#{arguments.locale}'" : null
+    )
+  else if debugComments
+    // TODO: og:locale is undefined 
+
+  //- Type
+  if arguments.type
+    meta(
+      property="og:type"
+      content= arguments.type
+      ng-attr-content= page.angular ? "{{page.type}}" : null
+      ng-init= page.angular ? "page.type = '#{arguments.type}'" : null
+    )
+  else if debugComments
+    // TODO: og:type is undefined 
+
+  //- Title
+  if arguments.title
+    meta(
+      property="og:title"
+      content= arguments.title
+      ng-attr-content= page.angular ? "{{page.title}}" : null
+      ng-init= page.angular ? "page.title = '#{arguments.title}'" : null
+    )
+  else if debugComments
+    // TODO: og:title is undefined 
+
+  //- Description
+  if arguments.description
+    meta(
+      property="og:description"
+      content= arguments.description
+      ng-attr-content= page.angular ? "{{page.description}}" : null
+      ng-init= page.angular ? "page.description = '#{arguments.description}'" : null
+    )
+  else if debugComments
+    // TODO: og:description is undefined 
+
+  //- Url
+  if arguments.url
+    meta(
+      property="og:url"
+      content= arguments.url
+      ng-attr-content= page.angular ? "{{page.url}}" : null
+      ng-init= page.angular ? "page.url = '#{arguments.url}'" : null
+    )
+  else if debugComments
+    // TODO: og:url is undefined 
+
+  //- Site name
+  if arguments.site_name
+    meta(
+      property="og:site_name"
+      content= arguments.site_name
+      ng-attr-content= page.angular ? "{{page.site_name}}" : null
+      ng-init= page.angular ? "page.site_name = '#{arguments.site_name}'" : null
+    )
+  else if debugComments
+    // TODO: og:site_name is undefined 
+
+  //- Image
+  if arguments.image
+    meta(
+      property="og:image"
+      content= arguments.image
+      ng-attr-content= page.angular ? "{{page.image}}" : null
+      ng-init= page.angular ? "page.image = '#{arguments.image}'" : null
+    )
+  else if debugComments
+    // TODO: og:site_name is undefined 
+
+//- Twitter
+mixin seo-twitter(arguments)
+  //- Card
+  if arguments.twitter && arguments.twitter.card
+    meta(
+      name="twitter:card"
+      content= arguments.twitter.card
+      ng-attr-content= page.angular ? "{{page.twitter.card}}" : null
+      ng-init= page.angular ? "page.twitter.card = '#{arguments.twitter.card}'" : null
+    )
+  else
+    if debugComments
+      // TODO: twitter:card is undefined 
+
+    meta(
+      name="twitter:card"
+      content= "summary"
+    )
+
+  //- Title
+  if arguments.twitter && arguments.twitter.title
+    meta(
+      name="twitter:title"
+      content= arguments.twitter.title
+      ng-attr-content= page.angular ? "{{page.twitter.title}}" : null
+      ng-init= page.angular ? "page.twitter.title = '#{arguments.twitter.title}'" : null
+    )
+  else
+    if debugComments
+      // TODO: twitter:title is undefined 
+
+    if arguments.title
+      meta(
+        name="twitter:title"
+        content= arguments.title
+        ng-attr-content= page.angular ? "{{page.title}}" : null
+        ng-init= page.angular ? "page.title = '#{arguments.title}'" : null
+      )
+
+  //- Description
+  if arguments.twitter && arguments.twitter.description
+    meta(
+      name="twitter:description"
+      content= arguments.twitter.description
+      ng-attr-content= page.angular ? "{{page.twitter.description}}" : null
+      ng-init= page.angular ? "page.twitter.description = '#{arguments.twitter.description}'" : null
+    )
+  else
+    if debugComments
+      // TODO: twitter:description is undefined 
+
+    if arguments.description
+      meta(
+        name="twitter:description"
+        content= arguments.description
+        ng-attr-content= page.angular ? "{{page.description}}" : null
+        ng-init= page.angular ? "page.description = '#{arguments.description}'" : null
+      )
+
+  //- Site
+  if arguments.twitter && arguments.twitter.site
+    meta(
+      name="twitter:site"
+      content= arguments.twitter.site
+      ng-attr-content= page.angular ? "{{page.twitter.site}}" : null
+      ng-init= page.angular ? "page.twitter.site = '#{arguments.twitter.site}'" : null
+    )
+  else if debugComments
+    // TODO: twitter:site is undefined 
+
+  //- Site name
+  if arguments.site_name
+    meta(
+      name="twitter:domain"
+      content= arguments.site_name
+      ng-attr-content= page.angular ? "{{page.site_name}}" : null
+      ng-init= page.angular ? "page.site_name = '#{arguments.site_name}'" : null
+    )
+  else if debugComments
+    // TODO: twitter:site_name is undefined 
+
+  //- Image
+  if arguments.twitter && arguments.twitter.image
+    meta(
+      property="twitter:image"
+      content= arguments.twitter.image
+      ng-attr-content= page.angular ? "{{page.twitter.image}}" : null
+      ng-init= page.angular ? "page.twitter.image = '#{arguments.twitter.image}'" : null
+    )
+  else
+    if debugComments
+      // TODO: twitter:site_name is undefined 
+    
+    if arguments.image
+      meta(
+        property="twitter:image"
+        content= arguments.image
+        ng-attr-content= page.angular ? "{{page.image}}" : null
+        ng-init= page.angular ? "page.image = '#{arguments.image}'" : null
+      )
