@@ -43,7 +43,6 @@
     "jade": "1.11.0",
     "js-yaml": "3.6.0",
     "lodash": "4.11.1",
-    "method-override": "2.3.6",
     "mkdirp": "0.5.1",
     "mongoose": "4.7.3",
     "mongoose-unique-validator": "1.0.3",
