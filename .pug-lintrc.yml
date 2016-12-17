@@ -1,0 +1,50 @@
+---
+# TODO: ругает Angular'овские конкатинации
+# disallowAttributeConcatenation: true
+# disallowAttributeInterpolation: false
+disallowBlockExpansion: true
+# disallowClassAttributeWithStaticValue: false
+# disallowClassLiteralsBeforeAttributes: false
+disallowClassLiteralsBeforeIdLiterals: true
+# disallowClassLiterals: false
+disallowDuplicateAttributes: true
+disallowHtmlText: true
+# disallowIdAttributeWithStaticValue: false
+# disallowIdAttributeWithStaticValue: false
+# disallowIdLiterals: false
+disallowMultipleLineBreaks: true
+# disallowSpaceAfterCodeOperator: false
+# disallowSpacesInsideAttributeBrackets: false
+# disallowSpecificAttributes: false
+# disallowSpecificTags: false
+disallowStringConcatenation: true
+# disallowStringInterpolation: false
+disallowTagInterpolation: true
+# maximumNumberOfLines: false
+requireClassLiteralsBeforeAttributes: true
+requireClassLiteralsBeforeIdLiterals: true
+requireIdLiteralsBeforeAttributes: true
+requireLineFeedAtFileEnd: true
+requireLowerCaseAttributes: true
+requireLowerCaseTags: true
+requireSpaceAfterCodeOperator: true
+# requireSpacesInsideAttributeBrackets: false
+requireSpecificAttributes:
+- img:
+  - src
+  - alt
+- a:
+  # - href
+  - title
+requireStrictEqualityOperators: true
+# TODO: иначе ломается хайлайтек ST3
+validateAttributeQuoteMarks: >-
+  "
+# TODO: не принимает первый аттибут с \n
+# validateAttributeSeparator:
+#   separator: " "
+#   multiLineSeparator: "\n"
+validateDivTags: true
+validateIndentation: 2
+validateSelfClosingTags: true
+...

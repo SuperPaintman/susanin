@@ -1,0 +1,37 @@
+---
+blocks:                   always      # ???
+brackets:                 never       # Запрещать сатвить скобочки {}
+colons:                   always      # :
+colors:                   always      # Цвета только переменными
+commaSpace:               always
+commentSpace:             always
+cssLiteral:               never       # Запрет встаивать чистый CSS
+depthLimit:               false       # Максимальное кол-во детей
+# TODO: Убрано из-за того, что ругается на for
+# duplicates:               never       # Можно ли дубликацировать свойства
+efficient:                always      # ??? проверка на эффективность код
+extendPref:               "@extend"   # Наследоваться через @extend, а не через @extends
+globalDupe:               true        # Разрешать переопределять глобальные блоки
+# TODO: Убрано из-за запрета переноса вызова функции
+# indentPref:               2           # Индентация в 2 символа
+leadingZero:              always      # Ведущий 0
+maxErrors:                false
+maxWarnings:              false
+# mixed:                    never       # Можно ли миксовать пробелы и табы
+namingConvention:         BEM         # Конвенция именования переменных
+namingConventionStrict:   true
+none:                     always      # None вместо 0
+noImportant:              true        # Запрещать использовать жесткие привязывания
+parenSpace:               never       # Запрет пробелов в вызовах функции
+placeholders:             always      # ???
+prefixVarsWithDollar:     always      # Переменная начинается с $
+quotePref:                double      # Использование двойных скобок
+semicolons:               never       # Использование ;
+sortOrder:                false       # TODO: Заменить на свой массив
+stackedProperties:        never       # Использовать inline запись
+trailingWhitespace:       never       # ???
+universal:                never       # Запрет глобального селектора *
+valid:                    true        # Валидация свойств
+zeroUnits:                never       # Разрешать использовать 0'вые значения. 0px
+zIndexNormalize:          10          # Шаг Z-index'а
+...

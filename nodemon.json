@@ -1,0 +1,18 @@
+{
+  "verbose": true,
+  "execMap": {
+    "js": "node"
+  },
+  "ignore": [
+    "node_modules/**/*",
+    "tmp/**/*",
+    ".gulp-tmp/**/*"
+  ],
+  "watch": [
+    "./.backend/"
+  ],
+  "ext": "js,json",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

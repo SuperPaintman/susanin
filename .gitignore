@@ -1,0 +1,36 @@
+# Git
+.git/
+
+# NPM
+node_modules/
+
+# TMP
+tmp/
+.gulp-tmp/
+
+# Certs
+certs/
+
+# Builds
+.backend/
+public/
+
+# Tests
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Meta for S3
+manifest-*.json
+
+# Config
+config.yml
+
+# Docs
+docs/
+docs-api/
+
+# README
+README/*.psd
