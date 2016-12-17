@@ -15,6 +15,8 @@ export const SCHEMA_NAME = 'Link';
 
 export const MAX_TRYING_TO_GENERATE_SHORT_URL = 10;
 
+export const REGEXP_API_URL = /^\/?api(\/.*)?$/;
+
 export const ERROR_PATH_IS_REQUIRED     = '"{PATH}" is required';
 export const ERROR_PATH_ALREADY_USED    = '"{PATH}" already used';
 
@@ -85,6 +87,9 @@ const LinkSchema = new Schema({
         return withoutSlash === encoded;
       },
       msg: 'Short URL should not contain special characters except "/"'
+    }, {
+      validator: (s) => !REGEXP_API_URL.test(s),
+      msg: 'Short URL cannot start with "api" or "api/*"'
     }],
     select:     true
   },
