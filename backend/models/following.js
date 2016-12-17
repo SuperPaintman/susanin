@@ -29,7 +29,6 @@ const FollowingSchema = new Schema({
   /** Referer */
   referer: {
     type:       String,
-    required:   ERROR_PATH_IS_REQUIRED,
     validate: [{
       validator: (s) => validator.isURL(s),
       msg: 'Invalid referer url'
