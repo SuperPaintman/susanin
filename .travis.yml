@@ -24,7 +24,7 @@ before_install:
   - "mongo ${NODE_DB_BASE} --eval 'db.createUser({ user: \"${NODE_DB_USER}\", pwd: \"${NODE_DB_PASS}\", roles: [ \"readWrite\", \"dbAdmin\" ] });'"
   # Instal deps
   - "npm install -g yarn"
-  - "yarn install --global coveralls istanbul"
+  - "yarn global add coveralls istanbul --no-progress"
   - "(NODE_ENV=development && yarn install --ignore-scripts --no-progress)"
   - "yarn ls"
 
