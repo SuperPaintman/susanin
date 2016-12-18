@@ -3,6 +3,8 @@
 import mongoose                   from 'mongoose';
 import mongooseUniqueValidator    from 'mongoose-unique-validator';
 
+import _                          from 'lodash';
+
 import config                     from './config';
 import logger                     from './logger';
 
@@ -37,6 +39,26 @@ mongoose.connect(`mongodb://${
 });
 
 mongoose.plugin(mongooseUniqueValidator);
+
+// Removing "_*" fields from Object and JSON
+mongoose.plugin((schema, opts) => {
+  ['toObject', 'toJSON'].forEach((method) => {
+    if (!schema.options[method]) {
+      schema.options[method] = {};
+    }
+
+    schema.options[method].transform = function transform(doc, ret, opt) {
+      _(ret)
+        .keys()
+        .filter((key) => key.charAt(0) === '_')
+        .forEach((key) => {
+          delete ret[key];
+        });
+
+      return ret;
+    };
+  });
+});
 
 /** Exports */
 export default mongoose;
