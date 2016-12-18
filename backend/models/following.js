@@ -20,7 +20,7 @@ const FollowingSchema = new Schema({
   /** Link */
   link: {
     type:       Schema.Types.ObjectId,
-    ref:        Link,
+    ref:        Link.modelName,
     required:   ERROR_PATH_IS_REQUIRED,
     index:      true,
     select:     true

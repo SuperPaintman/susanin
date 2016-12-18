@@ -97,7 +97,7 @@ const LinkSchema = new Schema({
   /** Creator */
   creator: {
     type:       Schema.Types.ObjectId,
-    ref:        User,
+    ref:        User.modelName,
     required:   ERROR_PATH_IS_REQUIRED,
     index:      true,
     select:     true
