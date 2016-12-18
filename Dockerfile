@@ -31,9 +31,10 @@ RUN npm run build:clear \
     && npm run build:images \
     && npm run build:icons \
     && npm run build:server \
-    && (NODE_ENV=development && npm run build:client)
+    && npm run build:client
 
-COPY manifest-css.json manifest-js.json "${NODE_APP_PATH}/"
+# Uncomment when CDN will be added
+#COPY manifest-css.json manifest-js.json "${NODE_APP_PATH}/"
 
 # Remove extra deps
 RUN yarn install --production --ignore-scripts --no-progress \
