@@ -20,6 +20,8 @@ export const REGEXP_API_URL = /^\/?api(\/.*)?$/;
 export const ERROR_PATH_IS_REQUIRED     = '`{PATH}` is required';
 export const ERROR_PATH_ALREADY_USED    = '`{PATH}` already used';
 
+export const ERROR_CANNOT_GENERATE_SHORT_URL = new Error('Cannot generate short url');
+
 export const SHORT_URL_GENERATORS = {
   ['shortUuid']() {
     return Promise.resolve()
@@ -123,7 +125,15 @@ LinkSchema.pre('validate', function (next) {
 
       next();
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.message !== ERROR_CANNOT_GENERATE_SHORT_URL.message) {
+        return next(err);
+      }
+
+      this.invalidate('shortUrl', err.message);
+
+      next();
+    });
 });
 
 /** Statucs */
@@ -154,7 +164,7 @@ LinkSchema.statics.genShortUrl = async function (generatorName = DEFAULT_SHORT_U
     i++;
 
     if (i > MAX_TRYING_TO_GENERATE_SHORT_URL) {
-      throw new Error('Cannot generate short url');
+      throw ERROR_CANNOT_GENERATE_SHORT_URL;
     }
   }
 
