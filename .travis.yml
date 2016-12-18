@@ -14,6 +14,7 @@ env:
     - "NODE_DB_HOST=127.0.0.1"
     - "NODE_DB_PORT=27017"
     - "NODE_DB_BASE=susanin_test"
+    - "YARN_VERSION=0.17.10"
 
 services:
   - docker
@@ -23,7 +24,7 @@ before_install:
   # Mongo
   - "mongo ${NODE_DB_BASE} --eval 'db.createUser({ user: \"${NODE_DB_USER}\", pwd: \"${NODE_DB_PASS}\", roles: [ \"readWrite\", \"dbAdmin\" ] });'"
   # Instal deps
-  - "npm install -g yarn"
+  - "npm install -g yarn@${YARN_VERSION}"
   - "yarn global add coveralls istanbul --no-progress"
   - "(NODE_ENV=development && yarn install --ignore-scripts --no-progress)"
   - "yarn ls"
