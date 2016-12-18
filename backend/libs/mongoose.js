@@ -60,5 +60,54 @@ mongoose.plugin((schema, opts) => {
   });
 });
 
+// `created` and `updated` fields
+mongoose.plugin((schema, opts) => {
+  if (!schema.options.createdAndUpdated) {
+    return;
+  }
+
+  schema.add({
+    created: {
+      type:       Date,
+      default:    Date.now,
+      select:     true
+    }
+  });
+
+  schema.add({
+    updated: {
+      type:       Date,
+      default:    Date.now,
+      select:     true
+    }
+  });
+
+  /** Pre save */
+  // Set update date equal created date if document is new
+  schema.pre('save', function (next) {
+    if (!this.isNew) {
+      return next();
+    }
+
+    this.updated = this.created;
+
+    next();
+  });
+
+  /** Pre save and update */
+  // Date of update
+  ['save', 'update'].forEach((method) => {
+    schema.pre(method, function (next) {
+      if (this.isNew) {
+        return next();
+      }
+
+      this.updated = Date.now();
+
+      next();
+    });
+  });
+});
+
 /** Exports */
 export default mongoose;

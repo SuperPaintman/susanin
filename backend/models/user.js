@@ -126,18 +126,9 @@ const UserSchema = new Schema({
     }],
     default:    '::ffff:127.0.0.1',
     select:     false
-  },
-
-  created: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
-  },
-  updated: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
   }
+}, {
+  createdAndUpdated: true
 });
 
 /** Virtal */
@@ -249,28 +240,6 @@ UserSchema.pre('validate', function (next) {
     next();
   })()
     .catch((err) => next(err));
-});
-
-/** Pre save */
-// Set update date equal created date if document is new
-UserSchema.pre('save', function (next) {
-  if (!this.isNew) {
-    return next();
-  }
-
-  this.updated = this.created;
-
-  next();
-});
-
-/** Pre save and update */
-// Date of update
-['save', 'update'].forEach((method) => {
-  UserSchema.pre(method, function (next) {
-    this.updated = Date.now();
-
-    next();
-  });
 });
 
 /** Pre find and findOne */

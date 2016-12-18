@@ -52,41 +52,9 @@ const FollowingSchema = new Schema({
   userAgent: {
     type:       String,
     select:     true
-  },
-
-  /** Meta */
-  created: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
-  },
-  updated: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
   }
-});
-
-/** Pre save */
-// Set update date equal created date if document is new
-FollowingSchema.pre('save', function (next) {
-  if (!this.isNew) {
-    return next();
-  }
-
-  this.updated = this.created;
-
-  next();
-});
-
-/** Pre save and update */
-// Date of update
-['save', 'update'].forEach((method) => {
-  FollowingSchema.pre(method, function (next) {
-    this.updated = Date.now();
-
-    next();
-  });
+}, {
+  createdAndUpdated: true
 });
 
 FollowingModel = mongoose.model(SCHEMA_NAME, FollowingSchema);

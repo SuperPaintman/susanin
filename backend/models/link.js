@@ -101,19 +101,9 @@ const LinkSchema = new Schema({
     required:   ERROR_PATH_IS_REQUIRED,
     index:      true,
     select:     true
-  },
-
-  /** Meta */
-  created: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
-  },
-  updated: {
-    type:       Date,
-    default:    Date.now,
-    select:     true
   }
+}, {
+  createdAndUpdated: true
 });
 
 /** Pre validate */
@@ -134,28 +124,6 @@ LinkSchema.pre('validate', function (next) {
       next();
     })
     .catch((err) => next(err));
-});
-
-/** Pre save */
-// Set update date equal created date if document is new
-LinkSchema.pre('save', function (next) {
-  if (!this.isNew) {
-    return next();
-  }
-
-  this.updated = this.created;
-
-  next();
-});
-
-/** Pre save and update */
-// Date of update
-['save', 'update'].forEach((method) => {
-  LinkSchema.pre(method, function (next) {
-    this.updated = Date.now();
-
-    next();
-  });
 });
 
 /** Statucs */
