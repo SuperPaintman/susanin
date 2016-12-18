@@ -3,6 +3,7 @@
 import url                from 'url';
 
 import templatesRouters   from './templates';
+import apiV1Routes        from './api/v1';
 
 import logger             from '../libs/logger';
 import {
@@ -32,6 +33,9 @@ export default function routes(app) {
   app.$get(/^\/_(?:\/.*)?$/, async function (req, res) {
     res.render('index.jade');
   });
+
+  /** api */
+  app.use('/api/v1', apiV1Routes);
 
   app.$get('*', async function (req, res, next) {
     const pathname = (req._parsedUrl && req._parsedUrl.pathname)
