@@ -44,12 +44,12 @@ export const PASSWORD_HASH_TYPES = {
 
 export const DEFAULT_PASSWOD_HASH_TYPE_NAME = 'BCRYPT';
 
-export const ERROR_PATH_IS_REQUIRED     = '"{PATH}" is required';
-export const ERROR_PATH_ALREADY_USED    = '"{PATH}" already used';
-export const ERROR_PATH_MIN_LENGTH      = '"{PATH}" must be less than {MINLENGTH}';
-export const ERROR_PATH_MAX_LENGTH      = '"{PATH}" must be greater than {MAXLENGTH}';
-export const ERROR_PASSWORD_MIN_LENGTH  = `"{PATH}" must be less than ${PASSWORD_MIN_LENGTH}`;
-export const ERROR_PASSWORD_MAX_LENGTH  = `"{PATH}" must be greater than ${PASSWORD_MAX_LENGTH}`;
+export const ERROR_PATH_IS_REQUIRED     = '`{PATH}` is required';
+export const ERROR_PATH_ALREADY_USED    = '`{PATH}` already used';
+export const ERROR_PATH_MIN_LENGTH      = '`{PATH}` must be less than {MINLENGTH}';
+export const ERROR_PATH_MAX_LENGTH      = '`{PATH}` must be greater than {MAXLENGTH}';
+export const ERROR_PASSWORD_MIN_LENGTH  = `\`{PATH}\` must be less than ${PASSWORD_MIN_LENGTH}`;
+export const ERROR_PASSWORD_MAX_LENGTH  = `\`{PATH}\` must be greater than ${PASSWORD_MAX_LENGTH}`;
 
 const { Schema } = mongoose;
 

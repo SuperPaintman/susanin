@@ -17,8 +17,8 @@ export const MAX_TRYING_TO_GENERATE_SHORT_URL = 10;
 
 export const REGEXP_API_URL = /^\/?api(\/.*)?$/;
 
-export const ERROR_PATH_IS_REQUIRED     = '"{PATH}" is required';
-export const ERROR_PATH_ALREADY_USED    = '"{PATH}" already used';
+export const ERROR_PATH_IS_REQUIRED     = '`{PATH}` is required';
+export const ERROR_PATH_ALREADY_USED    = '`{PATH}` already used';
 
 export const SHORT_URL_GENERATORS = {
   ['shortUuid']() {
@@ -101,7 +101,12 @@ const LinkSchema = new Schema({
     required:   ERROR_PATH_IS_REQUIRED,
     index:      true,
     select:     true
-  }
+  },
+
+  a: { a: { a: {
+    type: [String],
+    required: true
+  }}}
 }, {
   createdAndUpdated: true
 });

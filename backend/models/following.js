@@ -9,8 +9,8 @@ import Link           from './link';
 /** Constant */
 export const SCHEMA_NAME = 'Following';
 
-export const ERROR_PATH_IS_REQUIRED     = '"{PATH}" is required';
-export const ERROR_PATH_ALREADY_USED    = '"{PATH}" already used';
+export const ERROR_PATH_IS_REQUIRED     = '`{PATH}` is required';
+export const ERROR_PATH_ALREADY_USED    = '`{PATH}` already used';
 
 const { Schema } = mongoose;
 
