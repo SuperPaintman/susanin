@@ -21,7 +21,7 @@ services:
 
 before_install:
   # Mongo
-  - "mongo ${NODE_DB_BASE} --eval 'db.addUser(\"${NODE_DB_USER}\", \"${NODE_DB_PASS}\")';"
+  - "mongo ${NODE_DB_BASE} --eval 'db.createUser({ user: \"${NODE_DB_USER}\", pwd: \"${NODE_DB_PASS}\", roles: [\"readWrite\", \"dbAdmin\" ] );'"
   # Instal deps
   - "npm install -g yarn"
   - "yarn install --global coveralls istanbul"
