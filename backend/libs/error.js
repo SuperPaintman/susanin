@@ -40,6 +40,7 @@ export class AuthLocalError extends AuthError {
   constructor(message, status, email, password) {
     super(message, status);
 
+    this.type = 'AuthError';
     this.email = email;
 
     Object.defineProperty(this, 'password', {
@@ -51,6 +52,8 @@ export class AuthLocalError extends AuthError {
 export class AccountError extends HttpError {
   constructor(message, status = 403, user) {
     super(message, status);
+
+    this.type = 'AccountError';
 
     Object.defineProperty(this, 'user', {
       value: user
