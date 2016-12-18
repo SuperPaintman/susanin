@@ -39,6 +39,7 @@
     "connect-redis": "3.1.0",
     "cookie-parser": "1.4.3",
     "dateformat": "1.0.12",
+    "es6-error": "4.0.0",
     "exa": "0.3.1",
     "express": "4.13.4",
     "express-session": "1.14.2",
