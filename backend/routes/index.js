@@ -3,7 +3,7 @@
 import url                from 'url';
 
 import {
-  ValidationError
+  ValidationError as MongooseValidationError
 }                         from 'mongoose/lib/error';
 
 import templatesRouters   from './templates';
@@ -14,7 +14,8 @@ import {
   AuthLocalError,
   AccountError,
   NotFoundError,
-  InternalServerError
+  InternalServerError,
+  ValidationError
 }                         from '../libs/error';
 
 import Link               from '../models/link';
@@ -91,6 +92,17 @@ export default function routes(app) {
     return next(ERROR_NOT_FOUND);
   });
 
+  // Transform Mongoose errors
+  app.$use(async function (err, req, res, next) {
+    if (!(err instanceof MongooseValidationError)) {
+      return next(err);
+    }
+
+    logger.warn('Untransformed mongoose ValidationError:', err);
+
+    next(ValidationError.fromMongooseError(err));
+  });
+
   // Error handler and 500
   app.$use(async function (err, req, res, next) {
     let error = err;
@@ -105,42 +117,10 @@ export default function routes(app) {
       error = ERROR_INTERNAL_SERVER;
     }
 
-    let errorStatus;
-    let errorMessage;
-    let errorType;
-    let errors;
-    if (err instanceof ValidationError) {
-      errorStatus   = 400;
-      errorMessage  = Object.keys(err.errors || {})
-        .filter((key) => key.charAt(0) !== '_')
-        .map((key) => {
-          if (err === err.errors[key]) {
-            return;
-          }
-
-          return ('' + err.errors[key]);
-        })
-        .join(', ');
-      errorType     = 'ValidationError';
-      errors = Object.keys(err.errors || {})
-        .filter((key) => key.charAt(0) !== '_')
-        .map((key) => {
-          if (err === err.errors[key]) {
-            return;
-          }
-
-          const e = err.errors[key];
-
-          return {
-            param:   e.path,
-            message: ('' + e)
-          };
-        });
-    } else {
-      errorStatus   = error.status || 400;
-      errorMessage  = error.message;
-      errorType     = error.type;
-    }
+    const errorStatus   = error.status || 400;
+    const errorMessage  = error.message;
+    const errorType     = error.type;
+    const errors        = error.errors || null;
 
     return res.format({
       json() {
