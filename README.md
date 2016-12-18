@@ -2,6 +2,7 @@
 
 [![Linux Build][travis-image]][travis-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
+[![Docker Pulls][docker-image]][docker-url]
 
 URL shortener and redirect service
 
@@ -22,3 +23,5 @@ URL shortener and redirect service
 [travis-url]: https://travis-ci.org/SuperPaintman/susanin
 [coveralls-image]: https://img.shields.io/coveralls/SuperPaintman/susanin/master.svg
 [coveralls-url]: https://coveralls.io/r/SuperPaintman/susanin?branch=master
+[docker-image]: https://img.shields.io/docker/pulls/superpaintman/susanin.svg
+[docker-url]: https://hub.docker.com/r/superpaintman/susanin/
