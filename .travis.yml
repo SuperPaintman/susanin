@@ -8,12 +8,12 @@ cache:
 
 env:
   global:
-    - NODE_ENV=test
-    - NODE_DB_USER=travis
-    - NODE_DB_PASS=test
-    - NODE_DB_HOST="127.0.0.1"
-    - NODE_DB_PORT="27017"
-    - NODE_DB_BASE=susanin_test
+    - "NODE_ENV=test"
+    - "NODE_DB_USER=travis"
+    - "NODE_DB_PASS=test"
+    - "NODE_DB_HOST=127.0.0.1"
+    - "NODE_DB_PORT=27017"
+    - "NODE_DB_BASE=susanin_test"
 
 services:
   - docker
@@ -30,7 +30,7 @@ before_install:
 
 script:
   # Lint
-  - npm run lint
+  - "npm run lint"
   # Build
   - "(NODE_ENV=production && npm run build:clear)"
   - "(NODE_ENV=production && npm run build:images)"
