@@ -67,6 +67,14 @@ export class AccountError extends HttpError {
   }
 }
 
+export class SessionError extends HttpError {
+  constructor(message, status = 403) {
+    super(message, status);
+
+    this.type = 'SessionError';
+  }
+}
+
 export class ValidationError extends HttpError {
   constructor(message, status = 400, errors = {}, err = null) {
     super(message, status);
