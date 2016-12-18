@@ -157,7 +157,7 @@ UserSchema.pre('validate', function (next) {
     this.invalidate('password', ERROR_PATH_IS_REQUIRED, this.password);
   }
 
-  if (!_.isString(this.password)) {
+  if (this.password && !_.isString(this.password)) {
     this.invalidate('password', new MongooseError.CastError('string', this.password, 'password'));
   }
 
@@ -228,7 +228,7 @@ UserSchema.pre('validate', function (next) {
 UserSchema.pre('validate', function (next) {
   const self = this;
 
-  if (!this.isNew && !this.isModified('password')) {
+  if (!this.isNew && !this.password) {
     return next();
   }
 
