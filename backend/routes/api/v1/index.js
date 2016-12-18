@@ -7,6 +7,8 @@ import _                  from 'lodash';
 
 import passport           from 'passport';
 
+import * as policies      from '../../../policies';
+
 import Link               from '../../../models/link';
 import Following          from '../../../models/following';
 
@@ -23,6 +25,9 @@ export const ERROR_AUTH_BAD_EMAIL_OR_PASSWORD = new AuthLocalError('Bad email or
 
 /** Init */
 const router = exa(express.Router());
+
+const POLICIE_IS_AUTH = policies.isAuth(true);
+const POLICIE_IS_NOT_AUTH = policies.isAuth(false);
 
 // Session
 router.$get('/session', async function (req, res, next) {
@@ -51,7 +56,7 @@ router.$get('/session', async function (req, res, next) {
   }
 });
 
-router.$post('/session', async function (req, res, next) {
+router.$post('/session', POLICIE_IS_NOT_AUTH, async function (req, res, next) {
   passport.authenticate('local', (err, user, info, status) => {
     if (err) {
       return next(err);
@@ -86,7 +91,7 @@ router.$post('/session', async function (req, res, next) {
   })(req, res, next);
 });
 
-router.$delete('/session', async function (req, res, next) {
+router.$delete('/session', POLICIE_IS_AUTH, async function (req, res, next) {
   req.logout();
 
   return res
@@ -100,9 +105,7 @@ router.$delete('/session', async function (req, res, next) {
 });
 
 // Links
-router.$get('/links', async function (req, res, next) {
-  /** @todo  add checking for current user */
-
+router.$get('/links', POLICIE_IS_AUTH, async function (req, res, next) {
   const links = await Link
     .find({
       creator: req.user.id
@@ -147,9 +150,7 @@ router.$get('/links', async function (req, res, next) {
     });
 });
 
-router.$get(/^\/links\/(.+)/, async function (req, res, next) {
-  /** @todo  add checking for current user */
-
+router.$get(/^\/links\/(.+)/, POLICIE_IS_AUTH, async function (req, res, next) {
   const shortUrl = req.params[0];
 
   const link = await Link
@@ -161,6 +162,8 @@ router.$get(/^\/links\/(.+)/, async function (req, res, next) {
   if (!link) {
     return next(ERROR_LINK_NOT_FOUND);
   }
+
+  /** @todo  add checking for current user */
 
   const followings = await Following
     .find({
@@ -193,9 +196,7 @@ router.$get(/^\/links\/(.+)/, async function (req, res, next) {
     });
 });
 
-router.$post('/links', async function (req, res, next) {
-  /** @todo  add check for auth */
-
+router.$post('/links', POLICIE_IS_AUTH, async function (req, res, next) {
   const { shortUrl, fullUrl } = req.body;
 
   const link = new Link({
@@ -223,9 +224,7 @@ router.$post('/links', async function (req, res, next) {
     });
 });
 
-router.$delete(/^\/links\/(.+)/, async function (req, res, next) {
-  /** @todo  add check for auth */
-
+router.$delete(/^\/links\/(.+)/, POLICIE_IS_AUTH, async function (req, res, next) {
   const shortUrl = req.params[0];
 
   const link = await Link.findOne({
