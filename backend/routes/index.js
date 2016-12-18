@@ -15,6 +15,7 @@ import {
   AccountError,
   NotFoundError,
   InternalServerError,
+  SessionError,
   ValidationError
 }                         from '../libs/error';
 
@@ -109,6 +110,7 @@ export default function routes(app) {
     if (!(err instanceof AuthLocalError
         || err instanceof AccountError
         || err instanceof NotFoundError
+        || err instanceof SessionError
         || err instanceof ValidationError)) {
       logger.debug('Untracked API error:', err);
 
