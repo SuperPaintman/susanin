@@ -1,0 +1,32 @@
+language: node_js
+node_js: "6"
+
+cache:
+  yarn: true
+
+before_install:
+  # Instal deps
+  - "npm install -g yarn"
+  - "yarn install --global coveralls istanbul"
+  - "(NODE_ENV=development && yarn install --ignore-scripts --no-progress)"
+  - "yarn ls"
+
+script:
+  # Lint
+  - npm run lint
+  # Build
+  - "(NODE_ENV=production && npm run build:clear)"
+  - "(NODE_ENV=production && npm run build:images)"
+  - "(NODE_ENV=production && npm run build:icons)"
+  - "(NODE_ENV=production && npm run build:server)"
+  - "(NODE_ENV=production && npm run build:client)"
+  # Test
+  - "npm run test-ci"
+
+after_script:
+  # coveralls
+  - "cat ./coverage/lcov.info | coveralls"
+
+branches:
+  except:
+    - gh-pages

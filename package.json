@@ -8,6 +8,7 @@
     "start": "node ./.backend/index.js",
     "start:dev": "nodemon",
     "test": "mocha --reporter spec --timeout 10000 --slow 2000 ./.backend/test/",
+    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha ./.backend/test/ -- --reporter spec --timeout 10000 --slow 2000",
     "test:watch": "mocha --reporter spec --timeout 10000 --slow 2000 --watch ./.backend/test/",
     "lint": "gulp lint",
     "build:clear": "gulp clear",
