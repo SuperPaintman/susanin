@@ -17,6 +17,14 @@ export class HttpError extends ExtendableError {
   }
 }
 
+export class ForbiddenError extends HttpError {
+  constructor(message = 'Forbidden') {
+    super(message, 403);
+
+    this.type = 'ForbiddenError';
+  }
+}
+
 export class NotFoundError extends HttpError {
   constructor(message = 'Not Found') {
     super(message, 404);

@@ -13,6 +13,7 @@ import logger             from '../libs/logger';
 import {
   AuthLocalError,
   AccountError,
+  ForbiddenError,
   NotFoundError,
   InternalServerError,
   SessionError,
@@ -109,6 +110,7 @@ export default function routes(app) {
     let error = err;
     if (!(err instanceof AuthLocalError
         || err instanceof AccountError
+        || err instanceof ForbiddenError
         || err instanceof NotFoundError
         || err instanceof SessionError
         || err instanceof ValidationError)) {
