@@ -14,11 +14,14 @@ import Following          from '../../../models/following';
 
 import {
   AuthLocalError,
+  ForbiddenError,
   NotFoundError,
   ValidationError
 }                         from '../../../libs/error';
 
 /** Constants */
+export const ERROR_YOU_CANT_GET_LINK = new ForbiddenError('You cant get this link');
+export const ERROR_YOU_CANT_DELETE_LINK = new ForbiddenError('You cant delete this link');
 export const ERROR_LINK_NOT_FOUND = new NotFoundError('Link not found');
 export const ERROR_AUTH_MISSING_CREDENTIALS = new AuthLocalError('Missing credentials', 400, null, null);
 export const ERROR_AUTH_BAD_EMAIL_OR_PASSWORD = new AuthLocalError('Bad email or password', 403, null, null);
@@ -163,7 +166,9 @@ router.$get(/^\/links\/(.+)/, POLICIE_IS_AUTH, async function (req, res, next) {
     return next(ERROR_LINK_NOT_FOUND);
   }
 
-  /** @todo  add checking for current user */
+  if (req.user.id.toString() !== link.creator.id.toString()) {
+    return next(ERROR_YOU_CANT_GET_LINK);
+  }
 
   const followings = await Following
     .find({
@@ -237,7 +242,9 @@ router.$delete(/^\/links\/(.+)/, POLICIE_IS_AUTH, async function (req, res, next
   }
 
 
-  /** @todo  add checking for current user */
+  if (req.user.id.toString() !== link.creator.toString()) {
+    return next(ERROR_YOU_CANT_DELETE_LINK);
+  }
 
 
   await link.remove();
