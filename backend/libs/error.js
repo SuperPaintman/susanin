@@ -13,7 +13,7 @@ export class HttpError extends ExtendableError {
 
 export class AuthError extends HttpError {
   constructor(message, status = 400) {
-    super(message);
+    super(message, status);
 
     this.type = 'AuthError';
     this.status = status;
