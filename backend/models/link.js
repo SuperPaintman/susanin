@@ -101,12 +101,7 @@ const LinkSchema = new Schema({
     required:   ERROR_PATH_IS_REQUIRED,
     index:      true,
     select:     true
-  },
-
-  a: { a: { a: {
-    type: [String],
-    required: true
-  }}}
+  }
 }, {
   createdAndUpdated: true
 });
