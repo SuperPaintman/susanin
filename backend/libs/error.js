@@ -11,6 +11,22 @@ export class HttpError extends ExtendableError {
   }
 }
 
+export class NotFoundError extends HttpError {
+  constructor(message = 'Not Found') {
+    super(message, 404);
+
+    this.type = 'NotFoundError';
+  }
+}
+
+export class InternalServerError extends HttpError {
+  constructor(message = 'Internal server error') {
+    super(message, 500);
+
+    this.type = 'InternalServerError';
+  }
+}
+
 export class AuthError extends HttpError {
   constructor(message, status = 400) {
     super(message, status);

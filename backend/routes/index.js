@@ -5,9 +5,19 @@ import url                from 'url';
 import templatesRouters   from './templates';
 
 import logger             from '../libs/logger';
+import {
+  AuthLocalError,
+  AccountError,
+  NotFoundError,
+  InternalServerError
+}                         from '../libs/error';
 
 import Link               from '../models/link';
 import Following          from '../models/following';
+
+/** Constants */
+export const ERROR_NOT_FOUND = new NotFoundError('Not Found');
+export const ERROR_INTERNAL_SERVER = new InternalServerError('Internal server error');
 
 /** Routes */
 export default function routes(app) {
@@ -41,7 +51,7 @@ export default function routes(app) {
 
 
     if (!link) {
-      return next();
+      return next(ERROR_NOT_FOUND);
     }
 
 
@@ -68,61 +78,33 @@ export default function routes(app) {
       .redirect(link.fullUrl);
   });
 
+  // 404
   app.$use(async function (req, res, next) {
-    const errorStatus   = 404;
-    const errorMessage  = 'Not Found';
-    const errorType     = 'NotFoundError';
-
-    res.format({
-      json() {
-        logger.debug('Format 404 response as json');
-
-        res
-          .status(errorStatus)
-          .send({
-            status: 'error',
-            error: {
-              type:     errorType,
-              message:  errorMessage
-            }
-          });
-      },
-
-      html() {
-        logger.debug('Format 404 response as html');
-
-        res
-          .status(errorStatus)
-          .render('error.jade', {
-            error: {
-              code:     errorStatus,
-              message:  errorMessage
-            }
-          });
-      },
-
-      default() {
-        logger.debug('Format 404 response as plain');
-
-        res
-          .status(errorStatus)
-          .send(errorMessage);
-      }
-    });
+    return next(ERROR_NOT_FOUND);
   });
 
+  // Error handler and 500
   app.$use(async function (err, req, res, next) {
-    logger.fatal(err);
+    let error = err;
+    if (!(err instanceof AuthLocalError
+        || err instanceof AccountError
+        || err instanceof NotFoundError)) {
+      logger.debug('Untracked API error:', err);
 
-    const errorStatus   = 500;
-    const errorMessage  = 'Internal server error';
-    const errorType     = 'InternalServerError';
+      logger.fatal(err);
 
-    res.format({
+      error = ERROR_INTERNAL_SERVER;
+    }
+
+    const errorStatus   = error.status || 400;
+    const errorMessage  = error.message;
+    const errorType     = error.type;
+
+    return res.format({
       json() {
-        logger.debug('Format 500 response as json');
+        logger.debug('Format HTTP error as json');
 
-        res
+        return res
           .status(errorStatus)
           .send({
             status: 'error',
@@ -134,7 +116,7 @@ export default function routes(app) {
       },
 
       html() {
-        logger.debug('Format 500 response as html');
+        logger.debug('Format HTTP error as html');
 
         res
           .status(errorStatus)
@@ -147,7 +129,7 @@ export default function routes(app) {
       },
 
       default() {
-        logger.debug('Format 500 response as plain');
+        logger.debug('Format HTTP error as plain');
 
         res
           .status(errorStatus)
