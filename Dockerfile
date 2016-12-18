@@ -37,7 +37,7 @@ COPY manifest-css.json manifest-js.json "${NODE_APP_PATH}/"
 
 # Remove extra deps
 RUN yarn install --production --ignore-scripts --no-progress \
-    && yarn ls
+    && yarn ls \
     && export PATH="$(npm bin):${PATH}"
 
 # Volumes
