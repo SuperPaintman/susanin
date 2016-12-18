@@ -51,10 +51,12 @@ config
 
     // Session Store
     sessionStore: {
-      host:       'localhost',
-      port:       '6379',
-      db:         '0',
-      pass:       null
+      store:      'mongo',
+      user:       null,
+      pass:       null,
+      host:       null,
+      port:       null,
+      base:       null
     }
   });
 
@@ -98,10 +100,12 @@ config
 
     // Session Store
     sessionStore: {
-      host: process.env.NODE_SESSION_HOST,
-      port: process.env.NODE_SESSION_PORT,
-      db:   process.env.NODE_SESSION_DB,
-      pass: process.env.NODE_SESSION_PASS
+      store:  process.env.NODE_SESSION_STORE_TYPE,
+      user:   process.env.NODE_SESSION_STORE_USER,
+      pass:   process.env.NODE_SESSION_STORE_PASS,
+      host:   process.env.NODE_SESSION_STORE_HOST,
+      port:   process.env.NODE_SESSION_STORE_PORT,
+      base:   process.env.NODE_SESSION_STORE_BASE
     }
   });
 
