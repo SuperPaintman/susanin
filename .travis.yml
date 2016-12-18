@@ -1,3 +1,5 @@
+sudo: required
+
 language: node_js
 node_js: "6"
 
@@ -14,6 +16,7 @@ env:
     - NODE_DB_BASE=susanin_test
 
 services:
+  - docker
   - mongodb
 
 before_install:
@@ -36,6 +39,8 @@ script:
   - "(NODE_ENV=production && npm run build:client)"
   # Test
   - "npm run test-ci"
+  # Docker
+  - "docker build -t superpaintman/susanin:latest ."
 
 after_script:
   # coveralls
