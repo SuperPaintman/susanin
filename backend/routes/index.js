@@ -2,6 +2,10 @@
 /** Requires */
 import url                from 'url';
 
+import {
+  ValidationError
+}                         from 'mongoose/lib/error';
+
 import templatesRouters   from './templates';
 import apiV1Routes        from './api/v1';
 
@@ -92,7 +96,8 @@ export default function routes(app) {
     let error = err;
     if (!(err instanceof AuthLocalError
         || err instanceof AccountError
-        || err instanceof NotFoundError)) {
+        || err instanceof NotFoundError
+        || err instanceof ValidationError)) {
       logger.debug('Untracked API error:', err);
 
       logger.fatal(err);
@@ -100,9 +105,42 @@ export default function routes(app) {
       error = ERROR_INTERNAL_SERVER;
     }
 
-    const errorStatus   = error.status || 400;
-    const errorMessage  = error.message;
-    const errorType     = error.type;
+    let errorStatus;
+    let errorMessage;
+    let errorType;
+    let errors;
+    if (err instanceof ValidationError) {
+      errorStatus   = 400;
+      errorMessage  = Object.keys(err.errors || {})
+        .filter((key) => key.charAt(0) !== '_')
+        .map((key) => {
+          if (err === err.errors[key]) {
+            return;
+          }
+
+          return ('' + err.errors[key]);
+        })
+        .join(', ');
+      errorType     = 'ValidationError';
+      errors = Object.keys(err.errors || {})
+        .filter((key) => key.charAt(0) !== '_')
+        .map((key) => {
+          if (err === err.errors[key]) {
+            return;
+          }
+
+          const e = err.errors[key];
+
+          return {
+            param:   e.path,
+            message: ('' + e)
+          };
+        });
+    } else {
+      errorStatus   = error.status || 400;
+      errorMessage  = error.message;
+      errorType     = error.type;
+    }
 
     return res.format({
       json() {
@@ -114,7 +152,8 @@ export default function routes(app) {
             status: 'error',
             error: {
               type:     errorType,
-              message:  errorMessage
+              message:  errorMessage,
+              errors:   errors
             }
           });
       },
@@ -127,7 +166,8 @@ export default function routes(app) {
           .render('error.jade', {
             error: {
               code:     errorStatus,
-              message:  errorMessage
+              message:  errorMessage,
+              errors:   errors
             }
           });
       },
