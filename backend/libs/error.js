@@ -31,3 +31,13 @@ export class AuthLocalError extends AuthError {
     });
   }
 }
+
+export class AccountError extends HttpError {
+  constructor(message, status = 403, user) {
+    super(message, status);
+
+    Object.defineProperty(this, 'user', {
+      value: user
+    });
+  }
+}

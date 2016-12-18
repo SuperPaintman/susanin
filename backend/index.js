@@ -5,6 +5,7 @@ import 'babel-polyfill';
 
 import './libs/mongoose';
 import './models';
+import './libs/passport';
 
 import path         from 'path';
 

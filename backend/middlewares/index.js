@@ -3,6 +3,8 @@
 import bodyParser         from 'body-parser';
 import cookieParser       from 'cookie-parser';
 
+import passport           from 'passport';
+
 import responseTime       from 'response-time';
 
 import _                  from 'lodash';
@@ -41,6 +43,22 @@ export default function middlewares(app) {
       secure: app.get('env is production') ? true : false
     }
   }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use((req, res, next) => {
+    // Logout if account is deactivated
+
+    if (!req.isAuthenticated()) {
+      return next();
+    }
+
+    if (!req.user.isActive) {
+      req.logout();
+    }
+
+    next();
+  });
 
   app.use((req, res, next) => {
     res.header('X-Powered-By', 'Susanin');
