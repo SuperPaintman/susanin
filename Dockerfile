@@ -33,7 +33,15 @@ RUN npm run build:clear \
     && npm run build:server \
     && npm run build:client
 
-COPY manifest-css.json manifest-js.json "${NODE_APP_PATH}/"
+# Uncomment when CDN will be added.
+# Now it generate by `npm run build:client`
+#COPY manifest-css.json manifest-js.json "${NODE_APP_PATH}/"
+
+RUN if [ ! -f ./manifest-css.json ] || [ ! -f ./manifest-js.json ]; then \
+        [ ! -f ./manifest-css.json ] && echo "\"manifest-css.json\" not found"; \
+        [ ! -f ./manifest-js.json ]  && echo "\"manifest-js.json\" not found"; \
+        exit 1; \
+    fi
 
 # Remove extra deps
 RUN yarn install --production --ignore-scripts --no-progress \
