@@ -4,7 +4,21 @@ node_js: "6"
 cache:
   yarn: true
 
+env:
+  global:
+    - NODE_ENV=test
+    - NODE_DB_USER=travis
+    - NODE_DB_PASS=test
+    - NODE_DB_HOST="127.0.0.1"
+    - NODE_DB_PORT="27017"
+    - NODE_DB_BASE=susanin_test
+
+services:
+  - mongodb
+
 before_install:
+  # Mongo
+  - "mongo ${NODE_DB_BASE} --eval 'db.addUser(\"${NODE_DB_USER}\", \"${NODE_DB_PASS}\")';"
   # Instal deps
   - "npm install -g yarn"
   - "yarn install --global coveralls istanbul"
