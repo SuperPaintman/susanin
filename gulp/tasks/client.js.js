@@ -2,10 +2,12 @@
 /** Requires */
 // Main
 const path                    = require('path');
+const fs                      = require('fs');
 
 const gulp                    = require('gulp');
 const $                       = require('gulp-load-plugins')();
 
+const through                 = require('through2');
 const webpack                 = require('webpack');
 const webpackStream           = require('webpack-stream');
 const ManifestPlugin          = require('webpack-manifest-plugin');
@@ -29,7 +31,7 @@ function webpackTask(options) {
     options = {};
   }
 
-  gulp.src(config.paths.client.js.from)
+  return gulp.src(config.paths.client.js.from)
     // Error handler
     .pipe($.plumber({
       errorHandler: helps.onError
@@ -68,13 +70,7 @@ function webpackTask(options) {
 
         if (config.isProduction) {
           plugins.push(new ManifestPlugin({
-            fileName: path
-              .relative(
-                __dirname,
-                path.join(config.paths.manifest.path, config.paths.manifest.filenames.js)
-              )
-              .split(path.sep)
-              .join(path.posix.sep)
+            fileName: config.paths.manifest.filenames.js
           }));
         }
 
@@ -97,10 +93,31 @@ function webpackTask(options) {
         return plugins;
       })()
     }, options)))
-    
+
     // Сохранение
     .pipe(gulp.dest(config.paths.client.js.to))
 
+    // Перемещение Manifest
+    .pipe(through.obj(function (chunk, enc, cb) {
+      const manifestName = path.parse(config.paths.manifest.filenames.js).base;
+      const filename = path.parse(chunk.path).base;
+
+      if (manifestName !== filename) {
+        return cb(null, chunk);
+      }
+
+      const originPath = chunk.path;
+
+      chunk.path = path.join(
+        config.paths.manifest.path,
+        config.paths.manifest.filenames.js
+      );
+      chunk.base = config.paths.manifest.path;
+
+      fs.rename(originPath, chunk.path, (err) => {
+        cb(err, chunk);
+      });
+    }))
     ;
 }
 
